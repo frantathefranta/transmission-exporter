@@ -3,6 +3,13 @@
 name: "Binary Build"
 
 on:
+  workflow_dispatch:
+    inputs:
+      force:
+        required: false
+        default: true
+        type: boolean
+        description: Force rebuild
   release:
     types: [created]
     secrets:
