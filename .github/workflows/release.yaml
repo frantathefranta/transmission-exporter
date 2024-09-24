@@ -5,6 +5,13 @@ name: "Binary Build"
 on:
   release:
     types: [created]
+    secrets:
+      BOT_APP_ID:
+        description: The App ID of the GitHub App
+        required: true
+      BOT_APP_PRIVATE_KEY:
+        description: The private key of the GitHub App
+        required: true
 
 jobs:
   releases-matrix:
@@ -16,10 +23,16 @@ jobs:
         goos: [linux]
         goarch: [amd64, arm64]
     steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
       - uses: actions/checkout@v4
       - uses: wangyoucao577/go-release-action@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: "${{ steps.app-token.outputs.token }}"
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
           goversion: "https://dl.google.com/go/go1.13.linux-amd64.tar.gz"
