@@ -45,4 +45,5 @@ jobs:
           goversion: "https://dl.google.com/go/go1.13.linux-amd64.tar.gz"
           project_path: "./cmd/transmission-exporter"
           binary_name: "transmission-exporter"
+          compress_assets: OFF
           # extra_files: LICENSE README.md
